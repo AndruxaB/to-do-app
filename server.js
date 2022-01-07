@@ -6,13 +6,19 @@ let app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 let db;
+
+let port = process.env.PORT;
+if (port == null || port == '') {
+  port = 3000;
+}
+
 app.use(express.static('public'));
 
 let connectionString =
   'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false';
 mongodb.connect(connectionString, { useNewUrlParser: true }, function (err, client) {
   db = client.db('TodoApp');
-  app.listen(3000);
+  app.listen(port);
 });
 
 function passwordProtected(req, res, next) {
